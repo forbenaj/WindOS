@@ -25,6 +25,7 @@ class Program {
         this.name = name;
         this.id;
         this.window
+        this.windowContent
         this.zIndex
     }
 
@@ -37,6 +38,9 @@ class Program {
     createWindow() {
         console.log(`Creating ${this.consoleType} console window for ${this.name} program...`);
 
+        this.windowContent = document.createElement("div");
+        this.windowContent.className = "window-content";
+        
 
         // Create the main div element
         this.window = document.createElement("div");
@@ -51,22 +55,37 @@ class Program {
         let windowTop = document.createElement("div");
         windowTop.className = "window-top";
 
+
+        let titleContainer = document.createElement("div");
+        let titleText = document.createElement("p")
+        titleContainer.className = "title"
+        titleText.innerHTML = this.name
+
+        titleContainer.appendChild(titleText)
+
+
+        let buttons = document.createElement("div")
+        buttons.className = "buttons"
+        
         // Create three button elements and append them to the window-top div
         let greenButton = document.createElement("button");
         greenButton.className = "round green";
-        windowTop.appendChild(greenButton);
+        buttons.appendChild(greenButton);
 
         let yellowButton = document.createElement("button");
         yellowButton.className = "round yellow";
-        windowTop.appendChild(yellowButton);
+        buttons.appendChild(yellowButton);
 
         let redButton = document.createElement("button");
         redButton.className = "close round red";
-        windowTop.appendChild(redButton);
+        buttons.appendChild(redButton);
+
+        windowTop.append(titleContainer)
+        windowTop.appendChild(buttons)
 
         // Append the child elements to the main div
         this.window.appendChild(windowTop);
-    
+        this.window.appendChild(this.windowContent);
 
         // Insert the main div into the body
         document.body.appendChild(this.window);
@@ -127,6 +146,7 @@ class ConsoleProgram extends Program {
     constructor(name, consoleType) {
         super(name);
         this.window;
+        this.windowContent;
         this.width = "450px";
         this.height="250px"
         this.top = "50%";
@@ -137,16 +157,13 @@ class ConsoleProgram extends Program {
     createWindow() {
         super.createWindow()
         // Create the window-content div element
-        let windowContent = document.createElement("div");
-        windowContent.className = "window-content";
-        windowContent.innerHTML = "&gt; Welcome to the WindOS console<br />&gt;<br />&gt;&gt; B/";
+        this.windowContent.innerHTML = "&gt; Welcome to the WindOS console<br />&gt;<br />&gt;&gt; B/";
 
         // Create the input element
         let inputElement = document.createElement("input");
         inputElement.className = "window-input";
         inputElement.type = "text";
 
-        this.window.appendChild(windowContent);
         this.window.appendChild(inputElement);
     }
 
@@ -163,6 +180,7 @@ class Calculator extends Program {
     constructor(name) {
         super(name);
         this.window;
+        this.windowContent;
         this.width;
         this.height;
         this.top = "50%";
@@ -172,10 +190,6 @@ class Calculator extends Program {
 
     createWindow() {
         super.createWindow()
-        // Create the container div
-        let calculatorContainer = document.createElement("div");
-        calculatorContainer.className = "calculator-container";
-      
       
         // Create the display input
         this.display = document.createElement("input");
@@ -225,11 +239,9 @@ class Calculator extends Program {
         }
       
         // Append elements to the container div
-        calculatorContainer.appendChild(this.display);
-        calculatorContainer.appendChild(table);
+        this.windowContent.appendChild(this.display);
+        this.windowContent.appendChild(table);
       
-        // Append the container div to the body or any other desired location
-        this.window.appendChild(calculatorContainer);
       }
 
     appendToDisplay(value) {
@@ -260,6 +272,7 @@ class Notepad extends Program {
     constructor(name) {
         super(name);
         this.window;
+        this.windowContent;
         this.width = "500px";
         this.height = "300px";
         this.top = "50%";
@@ -275,13 +288,15 @@ class Notepad extends Program {
         // Set attributes for the textarea
         this.textarea.id = "dynamicTextarea";
         this.textarea.name = "dynamicText";
-        this.textarea.rows = 20;
-        this.textarea.cols = 70;
-        /*this.textarea.style.width="100%"
-        this.textarea.style.height="100%"*/
+        /*this.textarea.rows = 20;
+        this.textarea.cols = 70;*/
+        this.textarea.style.width="100%"
+        this.textarea.style.height="100%"
+        this.textarea.style.boxSizing="border-box"
+        this.textarea.style.resize="none"
     
         // Append the textarea to the body or another HTML element
-        this.window.appendChild(this.textarea);
+        this.windowContent.appendChild(this.textarea);
       }
 
     run() {
@@ -297,6 +312,7 @@ class Paint extends Program {
     constructor(name) {
         super(name);
         this.window;
+        this.windowContent;
         this.width = "500px";
         this.height = "500px";
         this.top = "20%";
@@ -306,30 +322,43 @@ class Paint extends Program {
     
     createWindow() {
         super.createWindow()
+        
         this.canvas = document.createElement('canvas');
-        this.canvas.width = 500;
-        this.canvas.height = 500;
-        this.window.appendChild(this.canvas);
+        this.canvas.width = 300;
+        this.canvas.height = 300;
+        this.windowContent.appendChild(this.canvas);
 
         this.context = this.canvas.getContext('2d');
-        this.context.strokeStyle = "red"
+        this.context.strokeStyle = "black"
+        this.context.fillStyle = "white"
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
         this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
         this.canvas.addEventListener('mousemove', (e) => this.draw(e));
         this.canvas.addEventListener('mouseup', () => this.stopDrawing());
         this.canvas.addEventListener('mouseout', () => this.stopDrawing());
+        
     }
 
     startDrawing(e) {
         this.isDrawing = true;
         this.context.beginPath();
-        this.context.moveTo(e.clientX - this.window.offsetLeft, e.clientY - this.window.offsetTop);
+
+        const rect = this.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        this.context.moveTo(x, y);
     }
 
     draw(e) {
         if (!this.isDrawing) return;
 
-        this.context.lineTo(e.clientX - this.window.offsetLeft, e.clientY - this.window.offsetTop);
+        const rect = this.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        this.context.lineTo(x, y);
         this.context.stroke();
     }
 
