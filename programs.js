@@ -26,7 +26,6 @@ class Program {
         this.id;
         this.window
         this.windowContent
-        this.zIndex
     }
 
     run() {
@@ -50,6 +49,7 @@ class Program {
         this.window.style.height = this.height;
         this.window.style.top = this.top;
         this.window.style.left = this.left;
+        this.window.style.zIndex = runningPrograms.length-1
 
         // Create the window-top div element
         let windowTop = document.createElement("div");
@@ -105,35 +105,26 @@ class Program {
             $(this).closest('.window').remove();
         });
         
-
-        // Window click-to-bring-to-top
-        (function() {
-            var highest = 100;
-
-            $.fn.selectWindow = function() {
-                // Make top
-                this.css('z-index', ++highest);
-                // Make this window selected and others not
-                this.addClass('selectedwindow');
-                $jWindow.not(this).each(function(){
-                    $(this).removeClass('selectedwindow');
-                });
-            };
-        })();
-        $jWindow.mousedown(function() {
-            $(this).selectWindow();
+        $jWindow.mousedown(() => {
+            this.bringToTop();
         });
-
-        //this.bringToTop()
 
     }
 
-    /*bringToTop(){
-        runningPrograms.splice(this.zIndex,1)
+    bringToTop(){
+        runningPrograms.splice(this.window.style.zIndex,1)
 
         runningPrograms.push(this)
 
-    }*/
+        for (let i = 0; i < runningPrograms.length; i++) {
+            let program = runningPrograms[i];
+            if(program.window){
+                program.window.style.zIndex = i
+            }
+        }
+
+
+    }
 
 
     close() {
