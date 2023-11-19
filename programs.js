@@ -8,7 +8,11 @@ function initProgram(e){
     consoleProgram.createWindow();
     consoleProgram.run();
     consoleProgram.close();*/
-    programList[e].run()
+
+
+    let programInstance = new programList[e](e)
+
+    programInstance.run()
 
 
 }
@@ -218,14 +222,14 @@ class Calculator extends Program {
             let onclickFunction;
       
             if (buttonValue === "=") {
-              onclickFunction = "programList.Calculator.calculateResult()";
+              onclickFunction =  () => this.calculateResult();
             } else if (buttonValue === "C") {
-              onclickFunction = "programList.Calculator.clearDisplay()";
+              onclickFunction = () => this.clearDisplay();
             } else {
-              onclickFunction = `programList.Calculator.appendToDisplay('${buttonValue}')`;
+              onclickFunction = () => this.appendToDisplay(buttonValue);
             }
       
-            cell.appendChild(createButton(buttonValue, new Function(onclickFunction)));
+            cell.appendChild(createButton(buttonValue, onclickFunction));
           }
         }
       
@@ -367,9 +371,16 @@ class Paint extends Program {
 
 
 
-var programList = {
+/*var programList = {
     "Console": new ConsoleProgram('Console Program', 'Command Line'),
     "Calculator": new Calculator('Calculator'),
     "Notepad": new Notepad('Notepad'),
     "Paint": new Paint('Paint')
+}*/
+
+var programList = {
+    "Console": ConsoleProgram,
+    "Calculator": Calculator,
+    "Notepad": Notepad,
+    "Paint": Paint
 }
