@@ -1,3 +1,31 @@
+function initialize(){
+    for(let program in programList){
+
+        let desktop = document.getElementById("Desktop")
+
+        let icon = document.createElement("div")
+        let image = document.createElement("div")
+        let text = document.createElement("div")
+
+        icon.ondblclick= ()=>initProgram(program)
+        icon.id="consoleIcon"
+        icon.className="icon"
+
+        image.className="icon-image"
+
+        text.className="icon-text"
+        text.innerHTML=program
+
+        icon.appendChild(image)
+        icon.appendChild(text)
+
+        desktop.appendChild(icon)
+
+    }
+}
+
+
+
 function initProgram(e){
    /* // Example usage
     const basicProgram = new Program(e);
@@ -289,6 +317,7 @@ class Notepad extends Program {
         this.textarea.style.height="100%"
         this.textarea.style.boxSizing="border-box"
         this.textarea.style.resize="none"
+        this.textarea.style.fontFamily="Comic Sans MS"
     
         // Append the textarea to the body or another HTML element
         this.windowContent.appendChild(this.textarea);

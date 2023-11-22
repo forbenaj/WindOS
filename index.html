@@ -12,6 +12,7 @@
     <style>
         body {
             background: #333;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
         }
 
         .icon {
@@ -36,7 +37,7 @@
             height: 40px;
             background: #ac5f5f;
             color: #fff;
-            font-family: monospace;
+            /*font-family: monospace;*/
             padding: 5px;
             background-image:url("images/renny/file.png");
             background-size: cover; /* This property will cover the entire div with the image */
@@ -47,7 +48,7 @@
             text-align: center;
             /*background: #000;*/
             color: #fff;
-            font-family: monospace;
+            /*font-family: monospace;*/
             padding: 5px;
         }
 
@@ -72,13 +73,13 @@
             background: #000;
             color: #fff;
             height: 100%;
-            font-family: monospace;
+            /*font-family: monospace;*/
             padding: 5px;
         }
 
         .window-input {
             display: block;
-            font-family: monospace;
+            /*font-family: monospace;*/
             width: calc(100% - 12px);
             background-color: #000;
             color: #fff;
@@ -165,11 +166,11 @@
     </style>
     <title>Document</title>
 </head>
-<body>
+<body onload="initialize()">
 
     <div id="Desktop">
         
-        <div ondblclick="initProgram('Console')" id="consoleIcon" class="icon">
+        <!--<div ondblclick="initProgram('Console')" id="consoleIcon" class="icon">
             <div class="icon-image"></div>
             <div class="icon-text">Console</div>
         </div>
@@ -184,7 +185,7 @@
         <div ondblclick="initProgram('Paint')" id="paintIcon" class="icon">
             <div class="icon-image"></div>
             <div class="icon-text">Paint</div>
-        </div>
+        </div>-->
 
     </div>
 
