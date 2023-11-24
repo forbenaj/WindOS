@@ -57,26 +57,7 @@ class Program {
         this.name = name;
         this.id;
         this.window
-        this.windowTop
         this.windowContent
-        this.x = 500
-        this.y = 500
-
-        this.startX = 0;
-        this.startY = 0;
-        this.endX = 0;
-        this.endY = 0;
-
-        this.lastX = 0;
-        this.lastY = 0;
-        this.deltaX = 0;
-        this.deltaY = 0;
-
-        
-        this.velX = 0;
-        this.velY = 0;
-        this.friction = 0.8
-        this.bounceFactor = 0.7
     }
 
     run() {
@@ -96,17 +77,15 @@ class Program {
         this.window = document.createElement("div");
         this.window.id = this.name;
         this.window.className = "window";
-        this.window.style.width = this.width+"px";
-        this.window.style.height = this.height+"px";
-        /*this.x = this.left
-        this.y = this.top
+        this.window.style.width = this.width;
+        this.window.style.height = this.height;
         this.window.style.top = this.top;
-        this.window.style.left = this.left;*/
+        this.window.style.left = this.left;
         this.window.style.zIndex = runningPrograms.length-1
 
         // Create the window-top div element
-        this.windowTop = document.createElement("div");
-        this.windowTop.className = "window-top";
+        let windowTop = document.createElement("div");
+        windowTop.className = "window-top";
 
 
         let titleContainer = document.createElement("div");
@@ -133,17 +112,21 @@ class Program {
         redButton.className = "close round red";
         buttons.appendChild(redButton);
 
-        this.windowTop.append(titleContainer)
-        this.windowTop.appendChild(buttons)
+        windowTop.append(titleContainer)
+        windowTop.appendChild(buttons)
 
         // Append the child elements to the main div
-        this.window.appendChild(this.windowTop);
+        this.window.appendChild(windowTop);
         this.window.appendChild(this.windowContent);
 
         // Insert the main div into the body
         document.body.appendChild(this.window);
 
+        // Window drag
+        
         let $jWindow = $(this.window);
+
+        $jWindow.draggable({ handle: "div.window-top" });
 
         // Window resize
         $jWindow.resizable({ handles: "all", alsoresize: ".window-content" });
@@ -158,100 +141,6 @@ class Program {
             this.bringToTop();
         });
 
-
-
-        // Listen to mouse
-
-        let isMouseDown = false;
-
-        this.windowTop.addEventListener("mousedown", (e) => {
-            isMouseDown = true;
-        });
-
-
-        document.addEventListener("mousemove", (event)=>{
-            event.preventDefault();
-            if(isMouseDown){
-                this.startX = this.lastX;
-                this.startY = this.lastY;
-                this.endX = event.clientX
-                this.endY = event.clientY
-
-                this.deltaX = this.endX - this.startX 
-                this.deltaY = this.endY - this.startY
-
-                this.lastX = this.endX;
-                this.lastY = this.endY
-            }
-            else{
-                this.lastX = event.clientX
-                this.lastY = event.clientY
-            }
-        })
-
-        document.addEventListener("mouseup", () => {
-            if (isMouseDown) {
-                isMouseDown=false
-            }
-        })
-        this.update()
-
-    }
-
-    update(){
-        
-        this.velX += this.deltaX*0.25
-        this.velY += this.deltaY*0.25
-
-        this.velX *= this.friction
-        this.velY *= this.friction
-
-        /*this.window.style.left = this.window.style.left - this.velX +" px";
-        this.window.style.top = this.window.style.top - this.velY + " px";*/
-
-        this.x += this.velX
-        this.y += this.velY
-
-        this.window.style.left = this.x + "px";
-        this.window.style.top = this.y + "px";
-
-        this.window.width
-
-        this.deltaX *= 0.97
-        this.deltaY *= 0.97
-
-        
-        // Get the dimensions of the viewport
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-
-        if (this.x < 0) {
-            this.velX = Math.abs(this.velX) * this.bounceFactor;
-            this.x = 0;
-            this.deltaX*=-1* this.bounceFactor
-        }
-        if (this.x > viewportWidth - this.width) {
-            this.velX = -Math.abs(this.velX) * this.bounceFactor;
-            this.x = viewportWidth - this.width;
-            this.deltaX*=-1* this.bounceFactor
-        }
-
-        if (this.y < 0) {
-            this.velY = Math.abs(this.velY) * this.bounceFactor;
-            this.y = 0;
-            this.deltaY*=-1* this.bounceFactor
-        }
-        if (this.y > viewportHeight - this.height) {
-            this.velY = -Math.abs(this.velY) * this.bounceFactor;
-            this.y = viewportHeight - this.height;
-            this.deltaY*=-1* this.bounceFactor
-        }
-        
-        this.width =     this.window.offsetWidth 
-        this.height =     this.window.offsetHeight
-
-        requestAnimationFrame(() => this.update());
-        
     }
 
     bringToTop(){
@@ -281,8 +170,8 @@ class ConsoleProgram extends Program {
         super(name);
         this.window;
         this.windowContent;
-        this.width = "450";
-        this.height="250"
+        this.width = "450px";
+        this.height="250px"
         this.top = "50%";
         this.left = "50%";
         this.consoleType = consoleType;
