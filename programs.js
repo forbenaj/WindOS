@@ -96,8 +96,6 @@ class Program {
         const randomX = Math.floor(Math.random() * screenWidth);
         const randomY = Math.floor(Math.random() * screenHeight);
 
-        console.log(`Creating window for ${this.name} program...`);
-
         this.windowContent = document.createElement("div");
         this.windowContent.className = "window-content";
         
@@ -144,6 +142,7 @@ class Program {
         let redButton = document.createElement("button");
         redButton.className = "close round red";
         buttons.appendChild(redButton);
+        //redButton.addEventListener("click", () => {this.close()})
 
         this.windowTop.append(titleContainer)
         this.windowTop.appendChild(buttons)
@@ -161,9 +160,8 @@ class Program {
         this.$jWindow.resizable({ handles: "all", alsoresize: ".window-content" });
 
         // Window close
-        //$('.windowclose').on("dblclick", function () { $(this).parents('div.window').hide(); });
-        this.$jWindow.on("click", ".close:first", function () {
-            $(this).closest('.window').remove();
+        this.$jWindow.on("click", ".close:first",  () => {
+            this.close()
         });
         
         this.$jWindow.mousedown(() => {
@@ -308,7 +306,13 @@ class Program {
     }
     
     close() {
-        console.log(`${this.name} program closed.`);
+        //console.log(`${this.name} program closed.`);
+        this.$jWindow.remove()
+        
+        const index = runningPrograms.indexOf(this);
+        if (index !== -1) {
+          runningPrograms.splice(index, 1);
+        }
     }
 }
 

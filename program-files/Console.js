@@ -25,7 +25,6 @@ class ConsoleProgram extends Program {
 
     run() {
         super.run();
-        console.log(`Console program is running.`);
         this.createWindow()
     }
 }

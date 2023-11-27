@@ -60,7 +60,6 @@ class Paint extends Program {
 
     run() {
         super.run();
-        console.log(`${this.name} program is running.`);
         this.createWindow()
     }
 }

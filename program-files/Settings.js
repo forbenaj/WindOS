@@ -50,9 +50,9 @@ class Settings extends Program {
 
         this.frictionSlider = document.createElement("input");
         this.frictionSlider.type = "range";
-        this.frictionSlider.min = 90;
-        this.frictionSlider.max = 99;
-        this.frictionSlider.value = settings.friction*100; // Initial value
+        this.frictionSlider.min = 1;
+        this.frictionSlider.max = 9;
+        this.frictionSlider.value = (100-settings.friction)*100; // Initial value
         frictionSettings.appendChild(this.frictionSlider);
 
 
@@ -68,7 +68,7 @@ class Settings extends Program {
     saveSettings(){
         settings.bouncy_dragging=this.isBouncyBtn.checked
         settings.bounce_factor=this.bounceSlider.value*0.01
-        settings.friction=this.frictionSlider.value*0.01
+        settings.friction=(100-this.frictionSlider.value)*0.01
         for(let program of runningPrograms){
             if(typeof program.makeDraggable === 'function'){
                 program.makeDraggable()
@@ -84,7 +84,6 @@ class Settings extends Program {
 
     run() {
         super.run();
-        console.log(`Settings program is running.`);
         this.createWindow()
     }
 }
